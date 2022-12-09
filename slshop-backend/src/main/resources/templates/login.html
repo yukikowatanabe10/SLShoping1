@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>SLShop ログイン</title>
+
+<!-- Bootstrap core CSS -->
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<!-- Custom Styles -->
+<link th:href="@{/css/sign-in.css}" rel="stylesheet" type="text/css">
+</head>
+<body class="text-center">
+  <main class="form-signin">
+    <form th:action="@{/login}" method="post">
+      <img class="img-fluid mb-4" th:src="@{/images/logo.svg}" alt="shoplog" width="80" height="80">
+      <h1 class="h3 mb-3 fw-normal">ログイン</h1>
+
+      <div th:if="${param.error}">
+        <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+      </div>
+      <div th:if="${param.logout}">
+        <p class="text-warning">ログアウトしました</p>
+      </div>
+
+      <div class="form-floating">
+        <input type="text" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Emailアドレス</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="パスワード">
+        <label for="floatingPassword">パスワード</label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">ログイン</button>
+    </form>
+  </main>
+</body>
+</html>

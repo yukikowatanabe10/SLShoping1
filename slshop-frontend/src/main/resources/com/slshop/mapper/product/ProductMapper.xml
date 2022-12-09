@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.slshop.product.ProductMapper">
+    <resultMap id="productMap" type="com.slshop.common.entity.product.Product">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="DESCRIPTION" property="description" />
+        <result column="IMAGE" property="image" />
+        <result column="PRICE" property="price" />
+        <result column="LENGTH" property="length" />
+        <result column="WIDTH" property="width" />
+        <result column="HEIGHT" property="height" />
+        <result column="WEIGHT" property="weight" />
+        <collection property="details" ofType="com.slshop.common.entity.product.ProductDetail">
+            <id column="DETAIL_ID" property="id"/>
+            <result column="DETAIL_NAME" property="name" />
+            <result column="VALUE" property="value" />
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="productMap">
+        SELECT
+            ID,
+            NAME,
+            DESCRIPTION,
+            IMAGE,
+            PRICE,
+            LENGTH,
+            WIDTH,
+            HEIGHT,
+            WEIGHT
+        FROM
+            PRODUCTS
+    </select>
+
+    <select id="findById" resultMap="productMap">
+        SELECT
+            P.ID,
+            P.NAME,
+            P.DESCRIPTION,
+            P.IMAGE,
+            P.PRICE,
+            P.LENGTH,
+            P.WIDTH,
+            P.HEIGHT,
+            P.WEIGHT,
+            D.ID AS DETAIL_ID,
+            D.NAME AS DETAIL_NAME,
+            D.VALUE
+        FROM PRODUCTS P
+            INNER JOIN PRODUCT_DETAILS D ON P.ID = D.PRODUCT_ID
+        WHERE
+            P.ID = #{id}
+    </select>
+</mapper>

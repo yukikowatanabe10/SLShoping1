@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+  <!-- Header -->
+  <header th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" th:href="@{/}">
+          <img class="img-fluid" th:src="@{/images/logo.svg}" width="40">
+          <span class="fw-bold fs-4">SLShop</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav ms-auto mb-2 mb-md-0 align-items-center">
+            <th:block sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+              <a class="text-decoration-none link-light mx-3" th:href="@{/login}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="text-decoration-none link-light mx-3" href="#">Register</a>
+            </li>
+            </th:block>
+
+            <th:block sec:authorize="isAuthenticated()">
+              <ul class="navbar-nav ms-auto px-3">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="account" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <span class="fw-bold">[[${#authentication.principal.customer.fullName}]]</span>
+                  <span class="ms-1">さん</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="account">
+                  <li><a class="dropdown-item" th:href="@{/account}">アカウント情報</a></li>
+                  <li>
+                    <form class="d-flex" th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+                      <input class="dropdown-item" type="submit" value="ログアウト">
+                    </form>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <a class="btn btn-warning btn fw-bold" th:href="@{/cart}">
+              <i class="bi bi-cart"></i>
+              <span>カート</span>
+            </a>
+            </th:block>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light py-3">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" th:href="@{/products}">PRODUCTS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">SALE</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">NEW</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">MAN</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">WOMEN</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">KIDS</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <div class="input-group">
+              <input class="form-control" type="search" placeholder="商品検索"/>
+              <button class="btn btn-success" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
+s
+  <!-- Footer -->
+  <footer th:fragment="footer" class="py-3 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">&copy; 2022 SLStudio</p>
+    </div>
+  </footer>
+</body>
+</html>

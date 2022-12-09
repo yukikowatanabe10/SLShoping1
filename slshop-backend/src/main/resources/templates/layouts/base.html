@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    th:fragment="layout(title, links, scripts, contents)">
+<head>
+  <meta lang="ja">
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title th:replace="${title}">共通部品</title>
+  <link rel="icon" th:href="@{/favicon.ico}"/>
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+
+  <!-- Custom styles for all pages -->
+  <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+
+  <!-- Page level custom CSS -->
+  <th:block th:if="${links != null}" th:replace="${links}" />
+
+</head>
+<body>
+
+  <th:block th:replace="~{layouts/navigation :: header}" />
+
+  <th:block th:replace="${contents}" />
+
+  <th:block th:replace="~{layouts/navigation :: footer}" />
+
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+  <!-- Custom scripts and plugins for all pages -->
+
+  <!-- Page level custom scripts and plugins -->
+  <script th:if="${scripts != null}" th:replace="${scripts}"></script>
+
+  <!-- Javascript Inline -->
+  <script type="text/javascript" th:inline="javascript">
+    const contextPath = /*[[@{/}]]*/ '';
+    const csrfValue = /*[[${_csrf.token}]]*/ '';
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.slshop.customer.CustomerMapper">
+    <resultMap id="customerMap" type="com.slshop.common.entity.Customer">
+        <id column="ID" property="id" />
+        <result column="EMAIL" property="email" />
+        <result column="FIRST_NAME" property="firstName" />
+        <result column="LAST_NAME" property="lastName" />
+        <result column="PASSWORD" property="password" />
+    </resultMap>
+
+    <select id="findByEmail" resultMap="customerMap">
+        SELECT
+            ID,
+            EMAIL,
+            FIRST_NAME,
+            LAST_NAME,
+            PASSWORD
+        FROM CUSTOMERS
+        WHERE
+            EMAIL = #{email}
+    </select>
+</mapper>

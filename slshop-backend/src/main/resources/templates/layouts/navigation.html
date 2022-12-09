@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+  <!-- Header -->
+  <header th:fragment="header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="container-fluid py-3">
+        <a class="navbar-brand" th:href="@{/}">SLSMS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="users" data-bs-toggle="dropdown"
+                aria-expanded="false">ユーザー管理</a>
+              <ul class="dropdown-menu" aria-labelledby="users">
+                <li><a class="dropdown-item" th:href="@{/users}">一覧</a></li>
+                <li><a class="dropdown-item" th:href="@{/users/new}">新規作成</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="categories" data-bs-toggle="dropdown"
+                aria-expanded="false">カテゴリー管理</a>
+              <ul class="dropdown-menu" aria-labelledby="categories">
+                <li><a class="dropdown-item" th:href="@{/categories}">一覧</a></li>
+                <li><a class="dropdown-item" th:href="@{/categories/new}">新規作成</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="brands" data-bs-toggle="dropdown"
+                aria-expanded="false">ブランド管理</a>
+              <ul class="dropdown-menu" aria-labelledby="brands">
+                <li><a class="dropdown-item" th:href="@{/brands}">一覧</a></li>
+                <li><a class="dropdown-item" th:href="@{/brands/new}">新規作成</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="products" data-bs-toggle="dropdown"
+                aria-expanded="false">商品管理</a>
+              <ul class="dropdown-menu" aria-labelledby="products">
+                <li><a class="dropdown-item" th:href="@{/products}">一覧</a></li>
+                <li><a class="dropdown-item" th:href="@{/products/new}">新規作成</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" th:href="@{/customers}" id="customers">顧客管理</a>
+            </li>
+            <th:block sec:authorize="hasAnyAuthority('admin', 'sales')">
+            <li class="nav-item dropdown">
+              <a class="nav-link" th:href="@{/orders}" id="orders">受注管理</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" th:href="@{/reports}" id="reports">販売レポート</a>
+            </li>
+            </th:block>
+          </ul>
+          <ul class="navbar-nav ms-auto px-3">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="account" data-bs-toggle="dropdown"
+                aria-expanded="false" sec:authentication="principal.loginUser.fullName">管理者太郎</a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="account">
+                <li><a class="dropdown-item" th:href="@{/account}">アカウント情報</a></li>
+                <li>
+                  <form class="d-flex" th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+                    <input class="dropdown-item" type="submit" value="ログアウト">
+                  </form>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- paging -->
+  <div th:fragment="pagination">
+    <div th:if="${totalPages > 1}">
+      <nav aria-label="Search results pages">
+        <ul class="pagination justify-content-center">
+          <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+            <a th:replace="layouts/navigation :: page_link(1, 'First')"></a>
+          </li>
+          <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+            <a th:replace="layouts/navigation :: page_link(${currentPage - 1}, 'Previous')"></a>
+          </li>
+          <li th:class="${currentPage != i ? 'page-item': 'page-item active'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <a th:replace="layouts/navigation :: page_link(${i}, ${i})"></a>
+          </li>
+          <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+            <a th:replace="layouts/navigation :: page_link(${currentPage + 1}, 'Next')"></a>
+          </li>
+          <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+            <a th:replace="layouts/navigation :: page_link(${totalPages}, 'Last')"></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <a th:fragment="page_link(pageNum, label)"
+        class="page-link"
+        th:href="@{${moduleURL} + '/page/' + ${pageNum} + ${keyword != null ? '?keyword=' + keyword : ''} + ${selected != null ? '&selected=' + selected: ''} }">[[${label}]]</a>
+
+  <!-- Footer -->
+  <footer th:fragment="footer" class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">SLShop Management System &copy; 2022 SLStudio</p>
+    </div>
+  </footer>
+
+</body>
+</html>

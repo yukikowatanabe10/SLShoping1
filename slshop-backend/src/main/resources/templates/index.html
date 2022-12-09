@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layouts/base :: layout(~{::title}, ~{}, ~{}, ~{::body/content()})}"
+>
+<head>
+    <title>トップページ</title>
+</head>
+<body>
+    <main>
+      <div class="container-fluid">
+        <h1 class="py-4">トップページ</h1>
+        <p sec:authorize="authenticated">ようこそ<span sec:authentication="principal.loginUser.fullName">ユーザー</span>さん</p>
+      </div>
+    </main>
+</body>
+</html>
