@@ -16,31 +16,47 @@
           <img class="card-img-top mb-5 mb-md-0" th:src="@{${product.imagePath}}" alt="product image" />
         </div>
         <div class="col-md-6">
-          <h1 class="display-5 fw-bolder">[[${product.name}]]</h1>
+          <h1 class="display-5 fw-bolder" id="productName">[[${product.name}]]</h1>
           <div class="fs-5 mb-5">
             <span>&yen;[[${product.price}]]</span>
           </div>
           <p class="lead mb-5">
             [[${product.description}]]
           </p>
-          <div class="d-flex input-group">
-              <button type="button" class="btn btn-secondary">
+          <form class="d-flex input-group" th:action="@{/products/add/{id}(id=${product.id})}" th:method="POST">
+              <button type="button" class="btn btn-secondary" id="btnM">
                 <i class="bi bi-dash"></i>
               </button>
-              <input type="text" class="form-control text-center" readonly style="max-width: 3rem" />
-              <button type="button" class="btn btn-secondary">
+              <input type="text" class="form-control text-center" readonly style="max-width: 3rem" id="textValue" name="textValue" value="0" />
+              <button type="button" class="btn btn-secondary" id="btnP">
                 <i class="bi bi-plus"></i>
               </button>
-              <button class="btn btn-outline-primary flex-shrink-0 ms-4" type="button">
+              <button class="btn btn-outline-primary flex-shrink-0 ms-4" type="submit" id="cartB" th:data-product-id="${product.id}">
                   <i class="bi-cart-fill me-1"></i>
                   カートに追加
               </button>
-          </div>
+              <input type="hidden" id="userId" name="userId" value="${#authentication.principal.customer.id}" />
+			 <div class="modal" tabindex="-1" id="myModal">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">カートへ商品追加</h5>
+			        <button type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <p id="textP"></p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="close">閉じる</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+          </form>
         </div>
       </div>
     </div>
   </section>
-
   <section class="py-3 bg-light">
     <div class="container px-4 px-lg-5 mt-1">
       <div class="row">
@@ -56,5 +72,43 @@
     </div>
   </section>
   <th:block th:replace="~{layouts/modal_fragments :: messageModal}" />
+  <script>
+	  let btnP = document.getElementById("btnP");
+	  let textValue = document.getElementById("textValue");
+	  btnP.addEventListener("click", function(){
+		  textValue.value++;
+	  })
+	  
+	  let btmM = document.getElementById("btnM");
+	  btmM.addEventListener("click",function(){
+		  if(textValue.value > 0){
+			  textValue.value--;
+		  }
+	  })
+	  
+	  let cartB = document.getElementById("cartB");
+	  cartB.addEventListener("click",function(){
+		  //モーダル
+		  let myModal = new bootstrap.Modal(document.getElementById("myModal"));
+		  myModal.show();
+		  let textP = document.getElementById("textP");
+		  console.log(textP);
+		  if(textValue.value <= 0){
+			 textP.textContent = "最低数量は1個です。"
+		  }else{
+			  textP.textContent = "OKです";
+		  }
+	  });
+	  
+	  let close = document.getElementById("close");
+	  close.addEventListener("click", function(){
+		  let myModal = new bootstrap.Modal(document.getElementById("myModal"));
+		  myModal.hide();
+	  })
+	 document.addEventListener('DOMContentLoaded', function () {
+    
+});
+	  
+  </script>
 </body>
 </html>

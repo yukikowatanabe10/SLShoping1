@@ -55,4 +55,9 @@
         WHERE
             P.ID = #{id}
     </select>
+    
+    <insert id="hozon" useGeneratedKeys="true" keyColumn="ID">
+    	INSERT INTO CART_ITEMS (ID, CUSTOMER_ID, PRODUCT_ID,QUANTITY)
+    	VALUES (CUSTOMER_ID_SEQ.nextval, #{customerId}, #{productId}, #{quantity})
+    </insert>
 </mapper>

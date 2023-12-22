@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>受注管理</title>
+</head>
+<body>
+	<h1>受注管理</h1>
+	<form>
+		<div>
+			<label>受注データ検索</label>
+		</div>
+		<div>
+			<input type="text">
+		</div>
+		<div>
+			<p>注文)ID・名前・メールアドレス・電話番号住所から受注データを検索します。</p>
+		</div>
+		<div>
+			<span><label>対応状況</label>
+					<td>
+						<label>
+							<input type="checkbox">新規受付
+						</label>
+						<label>
+							<input type="checkbox">入金済
+						</label>
+						<label>
+							<input type="checkbox">注文処理中
+						</label>
+						<label>
+							<input type="checkbox">注文取り消し
+						</label>
+						<label>
+							<input type="checkbox">発送準備
+						</label>
+						<label>
+							<input type="checkbox">発送中
+						</label>
+						<label>
+							<input type="checkbox">発送済
+						</label>
+						<label>
+							<input type="checkbox">返金済み
+						</label>
+					</td>
+			</span>
+		</div>
+		<input type="submit" value="検索">
+	</form>
+	<form>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>名前</th>
+					<th>注文日時</th>
+					<th>支払方法</th>
+					<th>対応状況</th>
+					<th>購入金額</th>
+					<th>お届け先</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="order : ${orders}">
+					<td th:text="${order.id}"></td>
+					<td th:text="${order.customer.getFullName}"></td>
+					<td th:text="${order.orderTime}"></td>
+					<td th:text="${order.paymentMethod.jpText}"></td>
+					<td th:text="${order.status.jpText}"></td>
+					<td th:text="${order.total}"></td>
+					<td th:text="${order.address.getState()} + ${order.address.getCity()} + ${order.address.getAddressLine1()}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</body>
+</html>

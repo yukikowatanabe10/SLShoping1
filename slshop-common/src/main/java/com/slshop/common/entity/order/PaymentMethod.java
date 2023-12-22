@@ -14,4 +14,6 @@ public enum PaymentMethod {
     public String getJpText() {
         return jpText;
     }
+    
+    
 }

@@ -12,5 +12,7 @@ public interface ProductMapper {
     List<Product> findAll();
 
     Product findById(Long id);
+    
+    public void insert(Integer userId, Integer productId, Integer quantity);
 
 }

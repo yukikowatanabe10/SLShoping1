@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.slshop.common.entity.Address;
 import com.slshop.common.entity.Customer;
 
 public class Order {
@@ -26,6 +27,8 @@ public class Order {
     private OrderStatus status;
 
     private Customer customer;
+    
+    private Address address;
 
     private Set<OrderDetail> orderDetails = new HashSet<>();
 
@@ -65,6 +68,10 @@ public class Order {
 
     public int getDeliverDays() {
         return deliverDays;
+    }
+    
+    public Address getAddress() {
+    	return this.address;
     }
 
     public void setDeliverDays(int deliverDays) {
@@ -117,6 +124,10 @@ public class Order {
 
     public void setOrderTracks(List<OrderTrack> orderTracks) {
         this.orderTracks = orderTracks;
+    }
+    
+    public void setAddress(Address address) {
+    	this.address = address;
     }
 
     @Override

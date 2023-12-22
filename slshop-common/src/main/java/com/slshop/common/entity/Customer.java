@@ -13,6 +13,7 @@ public class Customer {
     private String lastName;
 
     private boolean enabled;
+    
 
     public Customer() {
     }
