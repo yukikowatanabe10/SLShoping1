@@ -36,18 +36,21 @@ public class ProductController {
         Product product = productService.getProduct(productId);
         model.addAttribute("id", productId);
         model.addAttribute("product", product);
+        System.out.println("productId: " + productId);
         return "products/product_detail";
     }
     
     @PostMapping("/add/{productId}")
-    public String viewProductDetail(@RequestParam("productId") Long productId, @RequestParam("textValue") Integer textValue, @RequestParam("userId") Long userId) {
-    	//
+    public String hiddenProductDetail(@PathVariable("productId") Long productId, @RequestParam("textValue") Integer textValue, @RequestParam("userId") Integer userId) {
     	
-    	//商品詳細で取得したカスタマーIDと個数と商品のIDをカートアイテムのDBに登録したい
-    	//取得した物をセット
-    	this.productService.hozon(userId, productId, textValue);
-    	return "redirect:/detail/{productId}";
+    	if(textValue > 10) {
+    			System.out.print("");
+    		}else {
+    			this.productService.insert(userId, productId, textValue);
+    		}
+    	return "redirect:/products/detail/{productId}";
     }
+    
     
 
     

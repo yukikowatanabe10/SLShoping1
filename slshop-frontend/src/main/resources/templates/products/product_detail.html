@@ -23,7 +23,7 @@
           <p class="lead mb-5">
             [[${product.description}]]
           </p>
-          <form class="d-flex input-group" th:action="@{/products/add/{id}(id=${product.id})}" th:method="POST">
+          <form class="d-flex input-group" th:action="@{/products/add/{productId}(productId=${product.id})}" th:method="POST" id="cartForm">
               <button type="button" class="btn btn-secondary" id="btnM">
                 <i class="bi bi-dash"></i>
               </button>
@@ -31,27 +31,28 @@
               <button type="button" class="btn btn-secondary" id="btnP">
                 <i class="bi bi-plus"></i>
               </button>
-              <button class="btn btn-outline-primary flex-shrink-0 ms-4" type="submit" id="cartB" th:data-product-id="${product.id}">
+              <button class="btn btn-outline-primary flex-shrink-0 ms-4" type="button" id="cartB" th:data-product-id="${product.id}">
                   <i class="bi-cart-fill me-1"></i>
                   カートに追加
               </button>
-              <input type="hidden" id="userId" name="userId" value="${#authentication.principal.customer.id}" />
-			 <div class="modal" tabindex="-1" id="myModal">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title">カートへ商品追加</h5>
-			        <button type="submit" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			      </div>
-			      <div class="modal-body">
-			        <p id="textP"></p>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="close">閉じる</button>
+              <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.customer.id}" />
+               <input type="hidden" name="productId" th:value="${product.id}">
+               	<div th:fragment="messageModal" class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="modalTitle">
+				 <div class="modal-dialog">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h1 class="modal-title fs-5" id="modalTitle">カートへ商品追加</h1>
+			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+			        </div>
+			        <div class="modal-body">
+			          <p id="modalBody">テキスト</p>
+			        </div>
+			        <div class="modal-footer">
+			          <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" id="close">閉じる</button>
+			        </div>
 			      </div>
 			    </div>
 			  </div>
-			</div>
           </form>
         </div>
       </div>
@@ -71,7 +72,6 @@
       </div>
     </div>
   </section>
-  <th:block th:replace="~{layouts/modal_fragments :: messageModal}" />
   <script>
 	  let btnP = document.getElementById("btnP");
 	  let textValue = document.getElementById("textValue");
@@ -87,26 +87,28 @@
 	  })
 	  
 	  let cartB = document.getElementById("cartB");
-	  cartB.addEventListener("click",function(){
-		  //モーダル
-		  let myModal = new bootstrap.Modal(document.getElementById("myModal"));
-		  myModal.show();
-		  let textP = document.getElementById("textP");
-		  console.log(textP);
-		  if(textValue.value <= 0){
-			 textP.textContent = "最低数量は1個です。"
+	  cartB.addEventListener("click", function(){
+		  let messageModal = new bootstrap.Modal(document.getElementById("messageModal")); 
+		  messageModal.show();
+		  let modalBody = document.getElementById("modalBody");
+		  let modalTitle = document.getElementById("modalTitle");
+		  let textValue = document.getElementById("textValue").value;
+		  console.log(textValue);
+		  if(textValue === "0"){
+			  modalBody.textContent =  "最低数量は１個です。";
+			  modalTitle.textContent = "商品数量変更";
 		  }else{
-			  textP.textContent = "OKです";
+			  modalBody.textContent = "おｋ";
 		  }
-	  });
+	  })
 	  
 	  let close = document.getElementById("close");
-	  close.addEventListener("click", function(){
-		  let myModal = new bootstrap.Modal(document.getElementById("myModal"));
-		  myModal.hide();
+	  close.addEventListener("click",function(){
+		  let messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+		  messageModal.hide();
+		  document.getElementById("cartForm").submit();
 	  })
 	 document.addEventListener('DOMContentLoaded', function () {
-    
 });
 	  
   </script>

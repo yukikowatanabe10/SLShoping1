@@ -16,5 +16,9 @@ public class MainController {
         return "login";
     }
     
+    @GetMapping("/cart")
+    public String cart() {
+    	return "/layouts/cart";
+    }
     
 }

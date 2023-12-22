@@ -27,9 +27,9 @@ public class ProductService {
         return product;
     }
     
-    public void hozon(Long userId, Long productId, Integer quantity) {
+    public void insert(Integer userId, Long productId, Integer textValue) {
     	CartItem cartItem = new CartItem();
-    	this.productMapper.insert(userId.intValue(), productId.intValue(),quantity);
+    	this.productMapper.insert(userId.intValue(), productId,textValue);
     }
    
 }
