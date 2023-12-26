@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.slshop.cartItem.CartItemMapper">
+    <resultMap id="cartItemMap" type="com.slshop.common.entity.CartItem">
+        <id column="ID" property="id" />
+        <result column="CUSTOMER_ID" property="customerId" />
+        <result column="PRODUCT_ID" property="productId" />
+        <result column="QUANTITY" property="quantity" />
+        <association property="customer" javaType="com.slshop.common.entity.Customer">
+            <id column="CUID" property="id"/>
+        </association>
+        <collection property="product" ofType="com.slshop.common.entity.product.Product">
+            <id column="PRID" property="id"/>
+            <result column="NAME" property="name"/>
+            <result column="IMAGE" property="image"/>
+            <result column="PRICE" property="price"/>
+        </collection>
+        
+    </resultMap>
+
+    <select id="findById" resultMap="cartItemMap">
+        SELECT
+            CUSTOMERS.ID AS CUID,
+            PRODUCT_ID,
+            QUANTITY
+        FROM CART_ITEMS
+        LEFT JOIN CUSTOMERS
+        ON CUSTOMERS.ID = CART_ITEMS.CUSTOMER_ID
+        WHERE
+            PRODUCT_ID = #{productId} AND CUSTOMER_ID = #{customerId}
+    </select>
+    
+    <update id="update">
+         UPDATE CART_ITEMS SET QUANTITY = #{quantity} WHERE CUSTOMER_ID = #{customer.id}
+    </update>
+    
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO CART_ITEMS (ID, CUSTOMER_ID, PRODUCT_ID, QUANTITY)
+        VALUES(CART_ITEMS_ID_SEQ.nextval, #{customer.id}, #{product.id}, #{quantity})
+    </insert>
+    
+    <select id="findAll" resultMap="cartItemMap">
+    	SELECT 
+    		CART_ITEMS.ID,
+    		PRODUCTS.IMAGE,
+    		PRODUCTS.NAME,
+    		PRODUCTS.PRICE,
+    		CART_ITEMS.QUANTITY
+    	FROM
+    		CART_ITEMS
+    	LEFT JOIN
+    		PRODUCTS
+    	ON
+    		CART_ITEMS.PRODUCT_ID = PRODUCTS.ID
+    </select>
+</mapper>

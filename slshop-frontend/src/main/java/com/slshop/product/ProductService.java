@@ -31,5 +31,11 @@ public class ProductService {
     	CartItem cartItem = new CartItem();
     	this.productMapper.insert(userId.intValue(), productId,textValue);
     }
+
+	
+    
+    //public CartItem getCartItem(Long id) {
+    	//CartItem cartItem = cartIte
+    //}
    
 }

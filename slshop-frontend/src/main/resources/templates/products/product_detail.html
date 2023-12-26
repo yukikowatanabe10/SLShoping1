@@ -35,7 +35,7 @@
                   <i class="bi-cart-fill me-1"></i>
                   カートに追加
               </button>
-              <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.customer.id}" />
+<!--              <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.customer.id}" />-->
                <input type="hidden" name="productId" th:value="${product.id}">
                	<div th:fragment="messageModal" class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="modalTitle">
 				 <div class="modal-dialog">
@@ -45,7 +45,7 @@
 			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
 			        </div>
 			        <div class="modal-body">
-			          <p id="modalBody">テキスト</p>
+			          <p id="modalBody" th:text="${message}">テキスト</p>
 			        </div>
 			        <div class="modal-footer">
 			          <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" id="close">閉じる</button>
@@ -90,16 +90,7 @@
 	  cartB.addEventListener("click", function(){
 		  let messageModal = new bootstrap.Modal(document.getElementById("messageModal")); 
 		  messageModal.show();
-		  let modalBody = document.getElementById("modalBody");
-		  let modalTitle = document.getElementById("modalTitle");
-		  let textValue = document.getElementById("textValue").value;
-		  console.log(textValue);
-		  if(textValue === "0"){
-			  modalBody.textContent =  "最低数量は１個です。";
-			  modalTitle.textContent = "商品数量変更";
-		  }else{
-			  modalBody.textContent = "おｋ";
-		  }
+		  
 	  })
 	  
 	  let close = document.getElementById("close");

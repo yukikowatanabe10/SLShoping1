@@ -13,64 +13,70 @@
 	crossorigin="anonymous">
 </head>
 <body>
-	<div class="w-50">
-		<table class="table">
-			<thead class="table-light">
-				<tr class="h-25">
-					<th>
-						<i class="bi bi-trash-fill"></i>
-					</th>
-					<th>#</th>
-					<th>商品画像</th>
-					<th>商品名</th>
-					<th>単価</th>
-					<th>数量</th>
-					<th>小計</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td></td>
-					<td></td>
-					<td>
-						<img src="..." class="img-thumbnail" alt="...">
-					</td>
-					<td></td>
-					<td>\</td>
-					<td>
-						<div class="btn-group" role="group" aria-label="Basic example">
-						  <button type="button" class="btn btn-secondary">－</button>
-						  <input type="text" class="form-control text-center" readonly style="max-width: 3rem">
-						  <button type="button" class="btn btn-secondary">＋</button>
-						</div>
-					</td>
-					<td>
-						\
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="w-25">
-		<table class="table">
-			<thead class="table-light">
-				<tr>
-					<th class="fs-3">カート小計</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-				    <td>
-						<div class="fs-3">合計
-							<span class="fs-3">\</span>
-						</div>
-						<div>
-							<input class="btn btn-primary" type="submit" value="レジに進む">
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+  <div class="container">
+	  <div class="row">
+<!--    <div class="w-50 m-5 row">-->
+      <table class="table col">
+        <thead class="table-light">
+          <tr class="h-25 ">
+            <th>
+              <i class="bi bi-trash-fill"></i>
+            </th>
+            <th>#</th>
+            <th>商品画像</th>
+            <th>商品名</th>
+            <th>単価</th>
+            <th>数量</th>
+            <th>小計</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="cartItem : ${cartItems}" class="p-3">
+            <td class="align-middle text-center">
+				<i class="bi bi-trash-fill"></i>
+			</td>
+            <td  class= "align-middle text-center" th:text="${cartItem.id}"></td>
+            <td class="align-middle text-center">
+				<img th:src="${cartItem.product.image}" ></td>
+            <td class = "align-middle text-center" th:text="${cartItem.product.name}"></td>
+            <td class="align-middle text-center" th:text="'¥' + ${cartItem.product.price}"></td>
+            <td class="align-middle">
+			    <div class="btn-group" role="group" aria-label="Basic example">
+			        <button type="button" class="btn btn-secondary btn-decrease">－</button>
+			        <input type="text" class="form-control text-center" th:value="${cartItem.quantity}" readonly style="max-width: 3rem" />
+			        <button type="button" class="btn btn-secondary btn-increase">＋</button>
+			    </div>
+			</td>
+            <td class="align-middle text-center" th:text="'¥' +${cartItem.product.price * cartItem.quantity}"></td>
+          </tr>
+        </tbody>
+      </table>
+<!--    </div>-->
+<!--    <div class="w-25 row">-->
+      <table class="table col">
+        <thead class="table-light">
+          <tr>
+            <th class="fs-3">カート小計</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="fs-3">合計
+                <span class="fs-3">\</span>
+              </div>
+              <div>
+                <input class="btn btn-primary" type="submit" value="レジに進む">
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+<!--    </div>-->
+  </div>
+  <script>
+	  
+  </script>
 </body>
 </html>

@@ -12,7 +12,7 @@
         <result column="PASSWORD" property="password" />
     </resultMap>
 
-    <select id="findByEmail" resultMap="customerMap">
+   <select id="findByEmail" resultMap="customerMap">
         SELECT
             ID,
             EMAIL,
@@ -24,3 +24,4 @@
             EMAIL = #{email}
     </select>
 </mapper>
+

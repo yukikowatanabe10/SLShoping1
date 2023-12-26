@@ -16,6 +16,5 @@ public interface ProductMapper {
     public void insert(Integer userId, Long productId, Integer textValue);
 
 
-
 	
 }
