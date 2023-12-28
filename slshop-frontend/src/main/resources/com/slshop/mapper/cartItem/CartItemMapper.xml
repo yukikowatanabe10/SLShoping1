@@ -55,5 +55,22 @@
     		PRODUCTS
     	ON
     		CART_ITEMS.PRODUCT_ID = PRODUCTS.ID
+    	WHERE 
+        	CART_ITEMS.CUSTOMER_ID = #{useId}
     </select>
+    <resultMap id="goukeiResultMap" type="java.lang.Integer">
+    	<result column="expr" property="expr" />
+	</resultMap>
+    <select id="goukei" resultMap="goukeiResultMap">
+    	SELECT
+        	SUM(CART_ITEMS.QUANTITY * PRODUCTS.PRICE) AS expr
+    	FROM
+        	CART_ITEMS
+   		 LEFT JOIN
+        	PRODUCTS
+    	ON
+        	CART_ITEMS.PRODUCT_ID = PRODUCTS.ID
+        WHERE 
+        	CART_ITEMS.CUSTOMER_ID = #{useId}
+</select>
 </mapper>

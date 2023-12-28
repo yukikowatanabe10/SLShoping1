@@ -35,7 +35,13 @@ public class CartItemService {
 		this.cartItemMapper.insert(cartItem);
 	}
 	
-	public List<CartItem> list(){
-		return this.cartItemMapper.findAll();
+	public List<CartItem> list(Long userId){
+		return this.cartItemMapper.findAll(userId);
 	}
+	
+	 public Integer goukei(Long userId) {
+	        return this.cartItemMapper.goukei(userId);
+	    }
+
+	
  }

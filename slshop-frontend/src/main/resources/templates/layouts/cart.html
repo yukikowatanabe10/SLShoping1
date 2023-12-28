@@ -1,82 +1,145 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-  th:replace="~{layouts/base :: layout(~{::title}, ~{}, ~{}, ~{::body/content()})}"
->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="~{layouts/base :: layout(~{::title}, ~{}, ~{}, ~{::body/content()})}">
 <head>
-<meta charset="UTF-8">
-<title>カート内</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" 
-	rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" 
-	crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>カート内</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
 </head>
 <body>
-  <div class="container">
-	  <div class="row">
-<!--    <div class="w-50 m-5 row">-->
-      <table class="table col">
-        <thead class="table-light">
-          <tr class="h-25 ">
-            <th>
-              <i class="bi bi-trash-fill"></i>
-            </th>
-            <th>#</th>
-            <th>商品画像</th>
-            <th>商品名</th>
-            <th>単価</th>
-            <th>数量</th>
-            <th>小計</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="cartItem : ${cartItems}" class="p-3">
-            <td class="align-middle text-center">
-				<i class="bi bi-trash-fill"></i>
-			</td>
-            <td  class= "align-middle text-center" th:text="${cartItem.id}"></td>
-            <td class="align-middle text-center">
-				<img th:src="${cartItem.product.image}" ></td>
-            <td class = "align-middle text-center" th:text="${cartItem.product.name}"></td>
-            <td class="align-middle text-center" th:text="'¥' + ${cartItem.product.price}"></td>
-            <td class="align-middle">
-			    <div class="btn-group" role="group" aria-label="Basic example">
-			        <button type="button" class="btn btn-secondary btn-decrease">－</button>
-			        <input type="text" class="form-control text-center" th:value="${cartItem.quantity}" readonly style="max-width: 3rem" />
-			        <button type="button" class="btn btn-secondary btn-increase">＋</button>
-			    </div>
-			</td>
-            <td class="align-middle text-center" th:text="'¥' +${cartItem.product.price * cartItem.quantity}"></td>
-          </tr>
-        </tbody>
-      </table>
-<!--    </div>-->
-<!--    <div class="w-25 row">-->
-      <table class="table col">
-        <thead class="table-light">
-          <tr>
-            <th class="fs-3">カート小計</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="fs-3">合計
-                <span class="fs-3">\</span>
-              </div>
-              <div>
-                <input class="btn btn-primary" type="submit" value="レジに進む">
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-<!--    </div>-->
-  </div>
-  <script>
-	  
-  </script>
+<div class="container">
+    <div class="row">
+        <div id="form">
+            <table class="table col">
+                <thead class="table-light">
+                <tr class="h-25 ">
+                    <th>
+                        <i class="bi bi-trash-fill"></i>
+                    </th>
+                    <th>#</th>
+                    <th>商品画像</th>
+                    <th>商品名</th>
+                    <th>単価</th>
+                    <th>数量</th>
+                    <th>小計</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cartItem : ${cartItems}" class="p-3">
+					<td>
+                    	<form action="@{/delete}" method="post" class="align-middle text-center" id="Bdelete">
+							<button>
+                        		<i class="bi bi-trash-fill" button type="button"></i>
+							</button>
+                    	</form>
+					</td>
+                    <td class="align-middle text-center" th:text="${cartItem.id}"></td>
+                    <td class="align-middle text-center">
+                        <img th:src="${cartItem.product.image}"></td>
+                    <td class="align-middle text-center" th:text="${cartItem.product.name}"></td>
+                    <td class="align-middle text-center productPrice">
+                        <span class="price" th:text="${cartItem.product.price}"></span>
+                    </td>
+                    <td class="align-middle">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-secondary btn-decrease MB" id="MB">－</button>
+                            <input type="text" class="form-control text-center quantity"
+                                   th:value="${cartItem.quantity}" readonly style="max-width: 3rem" id="quantity"/>
+                            <button type="button" class="btn btn-secondary btn-increase PB" id="PB">＋</button>
+                        </div>
+                    </td>
+                    <td class="align-middle text-center">
+                        <span class="subtotal" th:text="${cartItem.product.price * cartItem.quantity}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table col">
+                <thead class="table-light">
+                <tr>
+                    <th class="fs-3">カート小計</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="fs-3">合計
+                            <span>\</span>
+                            <span class="fs-3" th:text="${goukeis}" id="goukei"></span>
+                        </div>
+                        <div>
+                            <input class="btn btn-primary" type="submit" value="レジに進む">
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="emptyCartMessage" style="visibility: hidden;">
+            <h1 id="zero">カートは空です</h1>
+        </div>
+    </div>
+</div>
+<script>
+    let MB = document.getElementsByClassName("MB");
+    let quantity = document.getElementsByClassName("quantity");
+    let price = document.getElementsByClassName("price");
+    let PB = document.getElementsByClassName("PB");
+    let subtotal = document.getElementsByClassName("subtotal");
+    let goukei = document.getElementById("goukei");
+    let form = document.getElementById("form");
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        if (parseInt(goukei.textContent) === 0) {
+            form.style.display = "none";
+            emptyCartMessage.style.visibility = "visible";
+            zero.textContent = "カートはゼロです";
+            console.log(zero.textContent);
+        } else {
+            form.style.display = "block";
+            emptyCartMessage.style.display = "none";
+        }
+    })
+
+    for (let i = 0; i < MB.length; i++) {
+        MB[i].addEventListener("click", function () {
+            if (quantity[i].value > 0) {
+                quantity[i].value--;
+                subtotal[i].textContent = quantity[i].value * parseInt(price[i].textContent);
+                caltotal();
+            }
+        });
+    }
+
+    for (let i = 0; i < PB.length; i++) {
+        PB[i].addEventListener("click", function () {
+            quantity[i].value++;
+            subtotal[i].textContent = quantity[i].value * parseInt(price[i].textContent);
+            caltotal();
+        });
+    }
+
+    function caltotal() {
+        let total = 0;
+        for (let i = 0; i < subtotal.length; i++) {
+            total += parseInt(subtotal[i].textContent);
+            goukei.textContent = total;
+        }
+    }
+    
+    document.getElementById('Bdelete').addEventListener('click', function(){
+		var form = this.closest('form');
+		 if (form) {
+            form.submit();
+        }
+	})
+    
+    
+</script>
 </body>
 </html>

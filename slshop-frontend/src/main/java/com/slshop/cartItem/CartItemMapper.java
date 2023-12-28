@@ -15,5 +15,7 @@ public interface CartItemMapper {
 	
 	public void insert(CartItem cartItem);
 	
-	public List<CartItem> findAll();
+	public List<CartItem> findAll(Long userId);
+	
+	public int goukei(Long userId);
 }
