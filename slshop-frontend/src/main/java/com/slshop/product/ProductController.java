@@ -35,10 +35,28 @@ public class ProductController {
         return "products/products";
     }
     @GetMapping("/detail/{productId}")
-    public String viewProductDetail(@PathVariable("productId") Long productId, Model model) {
+    public String viewProductDetail(@PathVariable("productId") Long productId, Model model, @AuthenticationPrincipal CustomerUserDetails user) {
         Product product = productService.getProduct(productId);
         model.addAttribute("id", productId);
         model.addAttribute("product", product);
+        model.addAttribute("cartQuantity", 0);
+        model.addAttribute("loggedin", 0);
+        
+        // ログインの場合
+        if ( user != null ) {
+        	
+        	model.addAttribute("loggedin", 1);
+        	
+        	List<CartItem> cartItems = cartItemService.findById(productId, user.getCustomer().getId());
+            
+            if(!cartItems.isEmpty()) {
+            	CartItem cartItem = cartItems.get(0);
+            	model.addAttribute("cartQuantity", cartItem.getQuantity());
+            }
+            
+        } 
+        
+        
         //System.out.println("productId: " + productId);
         return "products/product_detail";
     }
@@ -56,19 +74,19 @@ public class ProductController {
     		//数量を入力する
     		cartItem1.setQuantity(textValue);
     		cartItemService.insert(cartItem1);
-    }else {
-    	CartItem cartItem2 = cartItems.get(0);
-    	if(user.getCustomer().getId() == cartItem2.getCustomer().getId() && (cartItem2.getQuantity() + textValue) > 10) {
-        	redirectAttributes.addFlashAttribute("message","最大数量は10個です");
-    	}else {
-    		int newQuantity = cartItem2.getQuantity() + textValue;
-            cartItem2.setQuantity(newQuantity);
-    		this.cartItemService.update(cartItem2);
-        	redirectAttributes.addFlashAttribute("message","商品を追加しました");
-        }
-    		
-    }
-    	//CartItem cartItem2 = cartItem.get();
+	    }else {
+	    	CartItem cartItem2 = cartItems.get(0);
+	    	if(user.getCustomer().getId() == cartItem2.getCustomer().getId() && (cartItem2.getQuantity() + textValue) > 10) {
+	        	redirectAttributes.addFlashAttribute("message","最大数量は10個です");
+	    	}else {
+	    		int newQuantity = cartItem2.getQuantity() + textValue;
+	            cartItem2.setQuantity(newQuantity);
+	    		this.cartItemService.update(cartItem2);
+	        	redirectAttributes.addFlashAttribute("message","商品を追加しました");
+	        }
+	    		
+	    }
+	    	//CartItem cartItem2 = cartItem.get();
 
     	
     	

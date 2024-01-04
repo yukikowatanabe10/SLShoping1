@@ -34,7 +34,7 @@
     </select>
     
     <update id="update">
-         UPDATE CART_ITEMS SET QUANTITY = #{quantity} WHERE CUSTOMER_ID = #{customer.id}
+         UPDATE CART_ITEMS SET QUANTITY = #{quantity} WHERE CUSTOMER_ID = #{customer.id} AND PRODUCT_ID = #{productId}
     </update>
     
     <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
@@ -72,5 +72,8 @@
         	CART_ITEMS.PRODUCT_ID = PRODUCTS.ID
         WHERE 
         	CART_ITEMS.CUSTOMER_ID = #{useId}
-</select>
+	</select>
+	<delete id="delete">
+		DELETE FROM CART_ITEMS WHERE ID = #{id}
+	</delete>
 </mapper>

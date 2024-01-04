@@ -8,6 +8,28 @@
   <title>商品詳細</title>
 </head>
 <body>
+	
+	<!-- Begin Modal -->
+	
+	<div th:fragment="messageModal" class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="modalTitle">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="modalTitle">カートへ商品追加</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+				</div>
+				<div class="modal-body">
+					<p id="modalBody" th:text="${message}">テキスト</p>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" id="close">閉じる</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- End Modal -->
+	
   <!-- Contents -->
   <section class="py-3">
     <div class="container px-4 px-lg-5 my-3">
@@ -37,23 +59,12 @@
               </button>
 <!--              <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.customer.id}" />-->
                <input type="hidden" name="productId" th:value="${product.id}">
-               	<div th:fragment="messageModal" class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="modalTitle">
-				 <div class="modal-dialog">
-			      <div class="modal-content">
-			        <div class="modal-header">
-			          <h1 class="modal-title fs-5" id="modalTitle">カートへ商品追加</h1>
-			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
-			        </div>
-			        <div class="modal-body">
-			          <p id="modalBody" th:text="${message}">テキスト</p>
-			        </div>
-			        <div class="modal-footer">
-			          <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" id="close">閉じる</button>
-			        </div>
-			      </div>
-			    </div>
-			  </div>
+               <input type="hidden" id="productvalue" th:value="${cartQuantity}">
+               <input type="hidden" id="loggedin" th:value="${loggedin}">
           </form>
+          
+			
+		  
         </div>
       </div>
     </div>
@@ -73,33 +84,69 @@
     </div>
   </section>
   <script>
-	  let btnP = document.getElementById("btnP");
-	  let textValue = document.getElementById("textValue");
-	  btnP.addEventListener("click", function(){
-		  textValue.value++;
-	  })
+	let btnP = document.getElementById("btnP");
+	let textValue = document.getElementById("textValue");
+	btnP.addEventListener("click", function(){
+		textValue.value++;
+	})
 	  
-	  let btmM = document.getElementById("btnM");
-	  btmM.addEventListener("click",function(){
-		  if(textValue.value > 0){
-			  textValue.value--;
-		  }
-	  })
-	  
-	  let cartB = document.getElementById("cartB");
-	  cartB.addEventListener("click", function(){
-		  let messageModal = new bootstrap.Modal(document.getElementById("messageModal")); 
-		  messageModal.show();
+	let btmM = document.getElementById("btnM");
+	btmM.addEventListener("click",function(){
+		if(textValue.value > 0){
+			textValue.value--;
+		}
+	})
+	
+	let cartB = document.getElementById("cartB");
+	cartB.addEventListener("click", function(){
+		let messageModal = new bootstrap.Modal(document.getElementById("messageModal")); 
+		let message = document.getElementById("modalBody");
+		let productvalue = document.getElementById("productvalue");
 		  
-	  })
+		let loggedin = document.getElementById("loggedin").value;
+	  
+	
+	  	if ( loggedin == "0") {
+			// 未ログイン時
+			message.textContent = "ログインしてください";
+			
+	  	} else {
+			// ログイン時
+			if(Number(textValue.value) <= 0){
+			  message.textContent = "最低数量は1個です。";
+			}else if(Number(textValue.value) > 10){
+				  message.textContent = "最大数量は10個です";
+			}else if((Number(textValue.value) +  Number(productvalue.value)) > 10){
+				  message.textContent = "商品を追加できませんでした。最大数量は10個です。（カート内：" + productvalue.value + ")";
+				   goukei = (Number(textValue.value) +  Number(productvalue.value));
+				   console.log(goukei);
+			}else{
+				  goukei = (Number(textValue.value) +  Number(productvalue.value));
+				  message.textContent = "商品をカートに追加しました（現在数量：" + goukei + ")";
+			}
+		}
+	  
+	 
+		messageModal.show();
+	})
+	  
+	  
 	  
 	  let close = document.getElementById("close");
 	  close.addEventListener("click",function(){
 		  let messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+		  
+		  let loggedin = document.getElementById("loggedin").value;
+		  
 		  messageModal.hide();
-		  document.getElementById("cartForm").submit();
+		  
+		  if(textValue.value > 0 && loggedin == "1"){
+			  document.getElementById("cartForm").submit();
+		  }
+		  
 	  })
 	 document.addEventListener('DOMContentLoaded', function () {
+		 console.log();
 });
 	  
   </script>

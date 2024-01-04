@@ -18,4 +18,6 @@ public interface CartItemMapper {
 	public List<CartItem> findAll(Long userId);
 	
 	public int goukei(Long userId);
+	
+	public void delete(Integer id);
 }

@@ -12,6 +12,23 @@
           crossorigin="anonymous">
 </head>
 <body>
+	<div th:fragment="messageModal"
+    class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="modalTitle">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalTitle">モーダルのタイトル</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+        </div>
+        <div class="modal-body">
+          <p id="modalBody">モーダルのコンテンツ</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <div class="container">
     <div class="row">
         <div id="form">
@@ -32,9 +49,9 @@
                 <tbody>
                 <tr th:each="cartItem : ${cartItems}" class="p-3">
 					<td>
-                    	<form action="@{/delete}" method="post" class="align-middle text-center" id="Bdelete">
+                    	<form th:action="@{/delete/{id}(id=${cartItem.id})}" method="post" class="align-middle text-center" id="Bdelete">
 							<button>
-                        		<i class="bi bi-trash-fill" button type="button"></i>
+                        		<i class="bi bi-trash-fill" button type="submit"></i>
 							</button>
                     	</form>
 					</td>
@@ -98,29 +115,32 @@
         if (parseInt(goukei.textContent) === 0) {
             form.style.display = "none";
             emptyCartMessage.style.visibility = "visible";
-            zero.textContent = "カートはゼロです";
+            zero.textContent = "カートは空です";
             console.log(zero.textContent);
         } else {
             form.style.display = "block";
             emptyCartMessage.style.display = "none";
         }
     })
-
     for (let i = 0; i < MB.length; i++) {
         MB[i].addEventListener("click", function () {
             if (quantity[i].value > 0) {
                 quantity[i].value--;
                 subtotal[i].textContent = quantity[i].value * parseInt(price[i].textContent);
                 caltotal();
+                
             }
         });
     }
 
     for (let i = 0; i < PB.length; i++) {
         PB[i].addEventListener("click", function () {
-            quantity[i].value++;
+			if(quantity[i].value < 10){
+				quantity[i].value++;
             subtotal[i].textContent = quantity[i].value * parseInt(price[i].textContent);
             caltotal();
+            
+			}
         });
     }
 
@@ -138,6 +158,7 @@
             form.submit();
         }
 	})
+	
     
     
 </script>

@@ -43,5 +43,10 @@ public class CartItemService {
 	        return this.cartItemMapper.goukei(userId);
 	    }
 
+	 public void delete(Integer id) {
+		 this.cartItemMapper.delete(id);
+	 }
+	 
+	
 	
  }

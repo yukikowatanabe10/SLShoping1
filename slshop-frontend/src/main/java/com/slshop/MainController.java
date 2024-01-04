@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.slshop.common.entity.CartItem;
@@ -47,9 +48,10 @@ public class MainController {
 		return "/layouts/cart";
 	}
 	
-	@PostMapping("/delete")
-	public  String delete() {
-		return "redirect:/layouts/cart";
+	@PostMapping("/delete/{id}")
+	public  String delete(@PathVariable("id") Integer id) {
+		this.cartItemService.delete(id);
+		return "redirect:/cart";
 	}
 
 }
